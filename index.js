@@ -10,3 +10,17 @@ app.listen(port, () => {
 app.get("/hello", (res, req) => {
   res.send("Hello!");
 });
+
+const cb = (req, res, next) => {
+  console.log("CB");
+  next();
+};
+
+app
+  .route("/user")
+  .get("/hello", (req, res) => {
+    res.send("Привет!");
+  })
+  .post("/hello", (req, res) => {
+    res.send("Привет!");
+  });
