@@ -1,13 +1,10 @@
-import express from "express";
-import { userRouter } from ".//users/users.js";
+import express, {Request, Response, NextFunction} from "express";
+import { userRouter } from "./users/users.js";
 
 const port = 8000;
 const app = express();
 
-userRouter.use((res, req, next) => {
-  console.log("Обработчик users ");
-  next();
-});
+
 app.use((res, req, next) => {
   console.log("Время ", Date.now());
   next();
@@ -20,7 +17,7 @@ app.get("/hello", (req, res) => {
 
 app.use("/users", userRouter);
 
-app.use((err, res, req, next) => {
+app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   console.log(err.message);
   res.status(500).send(err.message);
 });
