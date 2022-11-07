@@ -18,14 +18,19 @@ export class UserService implements IUserService {
 		const newUser = new User(email, name);
 		const salt = this.configSrvice.get('SALT');
 		await newUser.setPassword(password, Number(salt));
-		const exesteduser = await this.usersRepository.find(email);
-		if (exesteduser) {
+		const existedUser = await this.usersRepository.find(email);
+		if (existedUser) {
 			return null;
 		}
 		return this.usersRepository.create(newUser);
 	}
 
-	async validateUser(dto: UserLoginDto): Promise<boolean> {
-		return true;
+	async validateUser({ email, password }: UserLoginDto): Promise<boolean> {
+		const existedUser = await this.usersRepository.find(email);
+		if (!existedUser) {
+			return false;
+		}
+		const newUser = new User(existedUser.email, existedUser.name, existedUser.password);
+		return newUser.comparePassword(password);
 	}
 }
