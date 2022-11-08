@@ -21,9 +21,8 @@ export class AuthMiddleware implements IMiddleware {
 				}
 				const { email } = decode(token) as { email: string };
 				req.user = email;
+				next();
 			});
-		} else {
-			next();
 		}
 	}
 }
