@@ -56,4 +56,8 @@ export class App {
 		this.server = this.app.listen(this.port);
 		this.logger.log(`Сервер запущен на ${this.port} пору`);
 	}
+
+	public close(): void {
+		this.server.close();
+	}
 }
